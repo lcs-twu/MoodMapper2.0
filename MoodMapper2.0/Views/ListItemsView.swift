@@ -17,27 +17,21 @@ struct ListItemsView: View {
         List{
             
             ForEach(moodMappers.results) { currentItem in
-                Label(title: {
+                HStack{
+                    Text(currentItem.emoji)
                     Text(currentItem.description)
-                })
-                .onTapGesture {
-                    Task {
-                        try await db!.transaction {
-                            core in try core.query("UPDATE MoodMapper SET completed = (?) WHERE id = (?)", !currentItem.completed, currentItem.id)
-                        }
-                    }
+                        .font(.title)
+                    Spacer()
                 }
             }
-            
             .onDelete(perform: removeRows)
-            
         }
     }
     
     init(filteredOn searchText: String){
-        _todoItems = BlackbirdLiveModels({
+        _moodMappers = BlackbirdLiveModels({
             db in
-            try await TodoItem.read(from: db, sqlWhere: "description LIKE ?", "%\(searchText)%")
+            try await MoodMapper.read(from: db, sqlWhere: "description LIKE ?", "%\(searchText)%")
         })
     }
     
@@ -47,22 +41,22 @@ struct ListItemsView: View {
             try await db!.transaction{ core in
                 var idList = ""
                 for offset in offsets{
-                    idList += "\(todoItems.results[offset].id),"
+                    idList += "\(moodMappers.results[offset].id),"
                 }
                 print(idList)
                 idList.removeLast()
                 print(idList)
                 
-                try core.query("DELETE FROM TodoItem WHERE id IN (?)",idList)
+                try core.query("DELETE FROM MoodMapper WHERE id IN (?)",idList)
             }
-        
+            
         }
     }
-}
 
 struct ListItemsView_Previews: PreviewProvider {
     static var previews: some View {
         ListItemsView(filteredOn: "")
             .environment(\.blackbirdDatabase, AppDatabase.instance)
     }
+}
 }
