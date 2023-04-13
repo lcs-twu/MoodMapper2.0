@@ -26,15 +26,17 @@ struct ListView: View {
                 
                 HStack {
                     TextField("Enter a emoji", text: $newEmojiDescription)
-                    TextField("Enter a to-do item", text: $newItemDescription)
+                    TextField("Enter your feeling", text: $newItemDescription)
                     Button(action: {
                         //                        let lastId = todoItems.last!.id
                         //                        let newId = lastId + 1
                         //                        let newTodoItem = TodoItem(id: newId, description: newItemDescription, completed: false)
                         //                        todoItems.append(newTodoItem)
                         //                        newItemDescription = ""
+                        
+                        //MARK: blackbird check how many ? in for each column
                         Task { try await db!.transaction {
-                            core in try core.query("INSERT INTO MoodMapper (emoji, description) VALUES (?)",newEmojiDescription, newItemDescription)
+                            core in try core.query("INSERT INTO MoodMapper (description, emoji) VALUES (?,?)",newEmojiDescription, newItemDescription)
                         }
                             newEmojiDescription = ""
                             newItemDescription = ""
@@ -46,7 +48,7 @@ struct ListView: View {
                 }
                 .padding(20)
             }
-            .navigationTitle("To do")
+            .navigationTitle("Mood Mapper")
         }
     }
 }

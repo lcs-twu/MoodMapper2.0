@@ -19,6 +19,7 @@ struct ListItemsView: View {
             ForEach(moodMappers.results) { currentItem in
                 HStack{
                     Text(currentItem.emoji)
+                        .font(.title2)
                     Text(currentItem.description)
                         .font(.title)
                     Spacer()
