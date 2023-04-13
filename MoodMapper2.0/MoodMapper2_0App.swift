@@ -11,7 +11,8 @@ import SwiftUI
 struct MoodMapper2_0App: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ListView()
+                .environment(\.blackbirdDatabase, AppDatabase.instance)
         }
     }
 }
