@@ -6,3 +6,10 @@
 //
 
 import Foundation
+import Blackbird
+
+struct MoodMapper: BlackbirdModel {
+    @BlackbirdColumn var id: Int
+    @BlackbirdColumn var description: String
+    @BlackbirdColumn var emoji: String
+}
